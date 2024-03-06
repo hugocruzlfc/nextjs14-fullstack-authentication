@@ -9,6 +9,7 @@ import Link from "next/link";
 const Page: NextPage = () => {
   const route = useRouter();
   const validationSchema = Yup.object({
+    name: Yup.string().required("Name is required"),
     email: Yup.string().email("Email must valid").required("Email is required"),
     password: Yup.string()
       .min(6, "Password must be greater than 6 characters")
@@ -16,6 +17,7 @@ const Page: NextPage = () => {
   });
 
   const initialValues = {
+    name: "",
     email: "",
     password: "",
   };
@@ -41,6 +43,21 @@ const Page: NextPage = () => {
           onSubmit={onSubmit}
         >
           <Form className="w-1/2  mx-auto">
+            <div className="mb-3 ">
+              <label htmlFor="name">Name</label>
+              <Field
+                type="text"
+                id="name"
+                name="name"
+                className="w-full py-2 px-4 ring-2 ring-indigo-400 outline-none border-none"
+                placeholder="Enter your name"
+              />
+              <ErrorMessage
+                name="name"
+                component={"p"}
+                className="text-red-500"
+              />
+            </div>
             <div className="mb-3 ">
               <label htmlFor="email">Email</label>
               <Field
@@ -82,12 +99,12 @@ const Page: NextPage = () => {
 
             <div className="mb-3">
               <p className="text-center">
-                Don't have an account?{" "}
+                Already have an account?{" "}
                 <Link
-                  href={"/register"}
+                  href={"/login"}
                   className="text-blue-500 underline cursor-pointer hover:text-blue-400"
                 >
-                  Register
+                  Login
                 </Link>
               </p>
             </div>

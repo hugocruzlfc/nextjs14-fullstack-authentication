@@ -12,7 +12,7 @@ export const Navbar: React.FC = () => {
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
           <Link
             href={"/"}
-            className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
+            className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0 "
           >
             <CiLock size={40} />
             <span className="ml-3 text-xl">Authentication</span>
