@@ -1,23 +1,30 @@
 "use client";
 import { NextPage } from "next";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import * as yup from "yup";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const Page: NextPage = () => {
   const route = useRouter();
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Email must valid").required("Email is required"),
-    password: Yup.string()
+  const validationSchema = yup.object({
+    email: yup.string().email("Email must valid").required("Email is required"),
+
+    password: yup
+      .string()
       .min(6, "Password must be greater than 6 characters")
       .required("Password is required"),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref("password"), ""], "Password must match")
+      .required("Confirm password is required"),
   });
 
   const initialValues = {
     email: "",
     password: "",
+    confirmPassword: "",
   };
 
   const onSubmit = (
@@ -71,34 +78,38 @@ const Page: NextPage = () => {
                 className="text-red-500"
               />
             </div>
+            <div className="mb-3 ">
+              <label htmlFor="confirmPassword">Confirm password</label>
+              <Field
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                className="w-full py-2 px-4 ring-2 ring-indigo-400 outline-none border-none"
+                placeholder="Confirm your password"
+              />
+              <ErrorMessage
+                name="confirmPassword"
+                component={"p"}
+                className="text-red-500"
+              />
+            </div>
             <div className="mb-3">
               <button
                 type="submit"
                 className="w-full bg-green-500 rounded text-white py-2 px-4 font-bold "
               >
-                Login
+                Forget
               </button>
             </div>
 
             <div className="mb-3">
               <p className="text-center">
-                Don't have an account?{" "}
+                Already Know?
                 <Link
-                  href={"/register"}
-                  className="text-blue-500 underline cursor-pointer hover:text-blue-400"
+                  href={"/login"}
+                  className="text-blue-500 underline cursor-pointer hover:text-blue-400 ml-2"
                 >
-                  Register
-                </Link>
-              </p>
-            </div>
-            <div className="mb-3">
-              <p className="text-center">
-                Forget
-                <Link
-                  href={"/forget-password"}
-                  className="text-blue-500 underline cursor-pointer hover:text-blue-400 ml-1"
-                >
-                  Password
+                  Login
                 </Link>
               </p>
             </div>

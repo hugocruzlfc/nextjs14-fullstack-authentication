@@ -10,14 +10,12 @@ const Page: NextPage = () => {
   const route = useRouter();
   const validationSchema = Yup.object({
     email: Yup.string().email("Email must valid").required("Email is required"),
-    password: Yup.string()
-      .min(6, "Password must be greater than 6 characters")
-      .required("Password is required"),
+    name: Yup.string().required("Name is required"),
   });
 
   const initialValues = {
     email: "",
-    password: "",
+    name: "",
   };
 
   const onSubmit = (
@@ -42,6 +40,21 @@ const Page: NextPage = () => {
         >
           <Form className="w-1/2  mx-auto">
             <div className="mb-3 ">
+              <label htmlFor="name">Name</label>
+              <Field
+                type="text"
+                id="name"
+                name="name"
+                className="w-full py-2 px-4 ring-2 ring-indigo-400 outline-none border-none"
+                placeholder="Enter your name"
+              />
+              <ErrorMessage
+                name="name"
+                component={"p"}
+                className="text-red-500"
+              />
+            </div>
+            <div className="mb-3 ">
               <label htmlFor="email">Email</label>
               <Field
                 type="email"
@@ -56,51 +69,13 @@ const Page: NextPage = () => {
                 className="text-red-500"
               />
             </div>
-            <div className="mb-3 ">
-              <label htmlFor="password">Password</label>
-              <Field
-                type="password"
-                id="password"
-                name="password"
-                className="w-full py-2 px-4 ring-2 ring-indigo-400 outline-none border-none"
-                placeholder="Enter your password"
-              />
-              <ErrorMessage
-                name="password"
-                component={"p"}
-                className="text-red-500"
-              />
-            </div>
             <div className="mb-3">
               <button
                 type="submit"
                 className="w-full bg-green-500 rounded text-white py-2 px-4 font-bold "
               >
-                Login
+                Update
               </button>
-            </div>
-
-            <div className="mb-3">
-              <p className="text-center">
-                Don't have an account?{" "}
-                <Link
-                  href={"/register"}
-                  className="text-blue-500 underline cursor-pointer hover:text-blue-400"
-                >
-                  Register
-                </Link>
-              </p>
-            </div>
-            <div className="mb-3">
-              <p className="text-center">
-                Forget
-                <Link
-                  href={"/forget-password"}
-                  className="text-blue-500 underline cursor-pointer hover:text-blue-400 ml-1"
-                >
-                  Password
-                </Link>
-              </p>
             </div>
           </Form>
         </Formik>

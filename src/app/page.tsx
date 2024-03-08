@@ -12,7 +12,7 @@ export default function Home() {
             <p className="font-semibold text-2xl">Email: hugo@gmail.com</p>
           </div>
           <div className="mb-3">
-            <Link href={"/profile"}>Profile Update</Link>
+            <Link href={"/update-profile"}>Profile Update</Link>
           </div>
         </div>
       </div>

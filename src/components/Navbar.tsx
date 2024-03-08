@@ -1,13 +1,22 @@
 "use client";
 import React from "react";
-import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { CiLock } from "react-icons/ci";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const Navbar: React.FC = () => {
+  const router = useRouter();
+  const logoutHandler = () => {
+    try {
+      toast.success("Logout successfully");
+      router.push("/login");
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
   return (
     <>
-      <Toaster />
       <header className="text-gray-600 body-font">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
           <Link
@@ -37,7 +46,10 @@ export const Navbar: React.FC = () => {
               Register
             </Link>
           </nav>
-          <button className="inline-flex items-center bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-white mt-4 md:mt-0">
+          <button
+            onClick={logoutHandler}
+            className="inline-flex items-center bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-white mt-4 md:mt-0"
+          >
             Logout
           </button>
         </div>
