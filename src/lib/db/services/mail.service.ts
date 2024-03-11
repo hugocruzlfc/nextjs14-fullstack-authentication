@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendMail = async (name: string, token: string, email: string) => {
   const info = await transporter.sendMail({
-    from: '"Maddison Foo Koch 👻" <hugocruzlfc@gmail.com>', // sender address
+    from: '"Nextjs Complete Authentication 👻" <hugocruzlfc@gmail.com>', // sender address
     to: email,
     subject: "Forget Password", // Subject line
     html: `

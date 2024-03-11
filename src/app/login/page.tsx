@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import axios, { AxiosError } from "axios";
 
 const Page: NextPage = () => {
   const route = useRouter();
@@ -20,16 +21,25 @@ const Page: NextPage = () => {
     password: "",
   };
 
-  const onSubmit = (
+  const onSubmit = async (
     values: typeof initialValues,
     { resetForm }: { resetForm: () => void }
   ) => {
     try {
-      toast.success("Login successfully");
+      const response = await axios.post("/api/login", values);
+      const data = await response.data;
+      toast.success(data.message);
       resetForm();
       route.push("/");
     } catch (error) {
-      toast.error((error as Error).message);
+      if (error instanceof AxiosError) {
+        const { response } = error;
+        if (response) {
+          toast.error(response.data.error);
+        }
+      } else {
+        toast.error((error as Error).message);
+      }
     }
   };
   return (
