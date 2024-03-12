@@ -42,6 +42,7 @@ const Page: NextPage = () => {
       }
     }
   };
+
   return (
     <>
       <div className="min-h-[82vh] w-full flex items-center justify-center">

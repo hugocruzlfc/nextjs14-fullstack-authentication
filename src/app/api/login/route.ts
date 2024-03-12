@@ -43,7 +43,7 @@ export const POST = async (req: Request, res: Response) => {
       message: "Login successfully!",
     },
     {
-      status: 201,
+      status: 200,
     }
   );
 
