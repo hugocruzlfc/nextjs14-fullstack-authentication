@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  // const pathVariable = request.nextUrl.pathname;
+  const pathVariable = request.nextUrl.pathname;
   // const publicPaths = [
   //   "/update-password",
   //   "/login",
@@ -9,10 +10,14 @@ export function middleware(request: NextRequest) {
   //   "/forgot-password",
   // ];
 
-  const auth = request.cookies.get("token");
+  const auth = request.cookies.get("token")?.value;
 
-  if (!auth) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  if (auth && !request.nextUrl.pathname.startsWith("/dashboard")) {
+    return Response.redirect(new URL("/dashboard", request.url));
+  }
+
+  if (!auth && !request.nextUrl.pathname.startsWith("/login")) {
+    return Response.redirect(new URL("/login", request.url));
   }
 
   // console.log(auth);

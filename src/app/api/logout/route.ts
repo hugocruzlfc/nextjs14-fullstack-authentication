@@ -1,10 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest) => {
-  const auth = req.cookies.delete("token");
-
+export const POST = async () => {
   //   return NextResponse.redirect("/login");
-  return NextResponse.json(
+  const response = NextResponse.json(
     {
       error: null,
       message: "User logged out successfully",
@@ -13,4 +11,8 @@ export const POST = async (req: NextRequest) => {
       status: 200,
     }
   );
+
+  response.cookies.delete("token");
+
+  return response;
 };
