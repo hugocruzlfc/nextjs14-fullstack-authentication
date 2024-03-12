@@ -4,17 +4,12 @@ import toast from "react-hot-toast";
 import { CiLock } from "react-icons/ci";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context";
 
 export const Navbar: React.FC = () => {
   const router = useRouter();
-  const logoutHandler = () => {
-    try {
-      toast.success("Logout successfully");
-      router.push("/login");
-    } catch (error) {
-      toast.error((error as Error).message);
-    }
-  };
+  const { user, logout } = useAuth();
+
   return (
     <>
       <header className="text-gray-600 body-font">
@@ -33,12 +28,14 @@ export const Navbar: React.FC = () => {
             >
               Home
             </Link>
-            <Link
-              href={"/login"}
-              className="mr-5 hover:text-gray-900"
-            >
-              Login
-            </Link>
+            {!user && (
+              <Link
+                href={"/login"}
+                className="mr-5 hover:text-gray-900"
+              >
+                Login
+              </Link>
+            )}
             <Link
               href={"/register"}
               className="mr-5 hover:text-gray-900"
@@ -46,12 +43,14 @@ export const Navbar: React.FC = () => {
               Register
             </Link>
           </nav>
-          <button
-            onClick={logoutHandler}
-            className="inline-flex items-center bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-white mt-4 md:mt-0"
-          >
-            Logout
-          </button>
+          {user && (
+            <button
+              onClick={logout}
+              className="inline-flex items-center bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-white mt-4 md:mt-0"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </header>
     </>

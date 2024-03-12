@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios, { AxiosError } from "axios";
+import { catchErrorMessage } from "@/utils";
 
 const Page: NextPage = () => {
   const route = useRouter();
@@ -32,14 +33,7 @@ const Page: NextPage = () => {
       resetForm();
       route.push("/");
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const { response } = error;
-        if (response) {
-          toast.error(response.data.error);
-        }
-      } else {
-        toast.error((error as Error).message);
-      }
+      catchErrorMessage(error);
     }
   };
 

@@ -5,6 +5,7 @@ import * as yup from "yup";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { catchErrorMessage } from "@/utils";
 
 const Page: NextPage = () => {
   const route = useRouter();
@@ -36,7 +37,7 @@ const Page: NextPage = () => {
       resetForm();
       route.push("/");
     } catch (error) {
-      toast.error((error as Error).message);
+      catchErrorMessage(error);
     }
   };
   return (
