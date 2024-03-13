@@ -6,36 +6,28 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { catchErrorMessage } from "@/utils";
+import axios from "axios";
 
 const Page: NextPage = () => {
   const route = useRouter();
   const validationSchema = yup.object({
     email: yup.string().email("Email must valid").required("Email is required"),
-
-    password: yup
-      .string()
-      .min(6, "Password must be greater than 6 characters")
-      .required("Password is required"),
-    confirmPassword: yup
-      .string()
-      .oneOf([yup.ref("password"), ""], "Password must match")
-      .required("Confirm password is required"),
   });
 
   const initialValues = {
     email: "",
-    password: "",
-    confirmPassword: "",
   };
 
-  const onSubmit = (
+  const onSubmit = async (
     values: typeof initialValues,
     { resetForm }: { resetForm: () => void }
   ) => {
     try {
-      toast.success("Login successfully");
+      const response = await axios.post("/api/forget-password", values);
+      const data = await response.data;
       resetForm();
-      route.push("/");
+      toast.success(data.message);
+      route.push("/login");
     } catch (error) {
       catchErrorMessage(error);
     }
@@ -64,36 +56,7 @@ const Page: NextPage = () => {
                 className="text-red-500"
               />
             </div>
-            <div className="mb-3 ">
-              <label htmlFor="password">Password</label>
-              <Field
-                type="password"
-                id="password"
-                name="password"
-                className="w-full py-2 px-4 ring-2 ring-indigo-400 outline-none border-none"
-                placeholder="Enter your password"
-              />
-              <ErrorMessage
-                name="password"
-                component={"p"}
-                className="text-red-500"
-              />
-            </div>
-            <div className="mb-3 ">
-              <label htmlFor="confirmPassword">Confirm password</label>
-              <Field
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                className="w-full py-2 px-4 ring-2 ring-indigo-400 outline-none border-none"
-                placeholder="Confirm your password"
-              />
-              <ErrorMessage
-                name="confirmPassword"
-                component={"p"}
-                className="text-red-500"
-              />
-            </div>
+
             <div className="mb-3">
               <button
                 type="submit"

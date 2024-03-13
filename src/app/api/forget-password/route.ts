@@ -1,4 +1,4 @@
-import { connectDB, generateForgetToken, UserModel } from "@/lib";
+import { connectDB, generateForgetToken, sendMail, UserModel } from "@/lib";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -22,7 +22,8 @@ export const POST = async (req: NextRequest) => {
     );
   }
 
-  const token = generateForgetToken(existUser._id);
+  const token = generateForgetToken(existUser._id, email);
+  const mailResponse = await sendMail(existUser.name, token, email);
 
   const response = NextResponse.json(
     {

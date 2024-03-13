@@ -42,5 +42,10 @@ UserSchema.methods.confirmPassword = function (enteredPassword: string) {
   return bcrypt.compare(enteredPassword, this.password);
 };
 
+UserSchema.methods.updatePassword = async function (enteredPassword: string) {
+  this.password = await bcrypt.hash(enteredPassword, 10);
+  return true;
+};
+
 export const UserModel =
   mongoose.models.User || mongoose.model("User", UserSchema);

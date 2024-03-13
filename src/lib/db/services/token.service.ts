@@ -10,7 +10,12 @@ export const generateToken = (id: string) => {
 export const verifyToken = (token: string): JwtPayload => {
   return jwt.verify(token, AUTH_SECRET) as JwtPayload;
 };
+export const verifyForgetToken = (token: string, email: string): JwtPayload => {
+  return jwt.verify(token, `${FORGET}+${email}`) as JwtPayload;
+};
 
-export const generateForgetToken = (id: string) => {
-  return jwt.sign({ userId: id }, FORGET, { expiresIn: "1d" });
+export const generateForgetToken = (id: string, email: string) => {
+  return jwt.sign({ userId: id }, `${FORGET}+${email}`, {
+    expiresIn: "1d",
+  });
 };
