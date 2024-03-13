@@ -1,13 +1,10 @@
 "use client";
 import React from "react";
-import toast from "react-hot-toast";
 import { CiLock } from "react-icons/ci";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context";
 
 export const Navbar: React.FC = () => {
-  const router = useRouter();
   const { user, logout } = useAuth();
 
   return (
@@ -29,19 +26,22 @@ export const Navbar: React.FC = () => {
               Home
             </Link>
             {!user && (
-              <Link
-                href={"/login"}
-                className="mr-5 hover:text-gray-900"
-              >
-                Login
-              </Link>
+              <>
+                <Link
+                  href={"/login"}
+                  className="mr-5 hover:text-gray-900"
+                >
+                  Login
+                </Link>
+
+                <Link
+                  href={"/register"}
+                  className="mr-5 hover:text-gray-900"
+                >
+                  Register
+                </Link>
+              </>
             )}
-            <Link
-              href={"/register"}
-              className="mr-5 hover:text-gray-900"
-            >
-              Register
-            </Link>
           </nav>
           {user && (
             <button

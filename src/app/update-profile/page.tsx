@@ -6,38 +6,51 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
+import { useAuth } from "@/context";
+import { catchErrorMessage } from "@/utils";
 
 const Page: NextPage = () => {
   const route = useRouter();
+  const { user } = useAuth();
   const validationSchema = Yup.object({
     email: Yup.string().email("Email must valid").required("Email is required"),
     name: Yup.string().required("Name is required"),
   });
 
-  const initialValues = {
-    email: "",
-    name: "",
-  };
+  // const initialValues = {
+  //   email: "",
+  //   name: "",
+  // };
 
-  const onSubmit = (
-    values: typeof initialValues,
+  const onSubmit = async (
+    values: { email: string; name: string },
     { resetForm }: { resetForm: () => void }
   ) => {
     try {
-      toast.success("Login successfully");
+      const response = await axios.put("/api/update-profile", values);
+      const data = await response.data;
+      toast.success(data.message);
       resetForm();
       route.push("/");
     } catch (error) {
-      toast.error((error as Error).message);
+      catchErrorMessage(error);
     }
   };
+
+  if (!user) {
+    return (
+      <div className="min-h-[82vh] flex justify-center items-center">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="min-h-[82vh] w-full flex items-center justify-center">
         <Formik
           validationSchema={validationSchema}
-          initialValues={initialValues}
+          initialValues={user}
           onSubmit={onSubmit}
         >
           <Form className="w-1/2  mx-auto">

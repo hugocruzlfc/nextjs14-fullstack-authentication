@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
     "/update-password",
     "/login",
     "/register",
-    "/forgot-password",
+    "/forget-password",
   ];
 
   const auth = request.cookies.get("token")?.value;

@@ -1,8 +1,9 @@
 import { connectDB, UserModel } from "@/lib";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 connectDB();
-export const POST = async (req: Request, res: Response) => {
+export const POST = async (req: NextRequest) => {
   const { name, email, password } = await req.json();
 
   const existUser = await UserModel.findOne({
