@@ -6,8 +6,13 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { catchErrorMessage } from "@/utils";
+import axios from "axios";
 
-const Page: NextPage = () => {
+interface NextPageProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+const Page: NextPage<NextPageProps> = ({ searchParams }) => {
   const route = useRouter();
   const validationSchema = yup.object({
     email: yup.string().email("Email must valid").required("Email is required"),
@@ -28,18 +33,31 @@ const Page: NextPage = () => {
     confirmPassword: "",
   };
 
-  const onSubmit = (
+  const onSubmit = async (
     values: typeof initialValues,
     { resetForm }: { resetForm: () => void }
   ) => {
     try {
-      toast.success("Login successfully");
+      console.log(searchParams.token);
+      console.log(values);
+
+      const response = await axios.put("/api/update-password", {
+        ...values,
+        token: searchParams.token,
+      });
+      const data = await response.data;
+      toast.success(data.message);
       resetForm();
       route.push("/");
     } catch (error) {
       catchErrorMessage(error);
     }
   };
+
+  if (!searchParams.token) {
+    route.replace("/login");
+  }
+
   return (
     <>
       <div className="min-h-[82vh] w-full flex items-center justify-center">
@@ -99,7 +117,7 @@ const Page: NextPage = () => {
                 type="submit"
                 className="w-full bg-green-500 rounded text-white py-2 px-4 font-bold "
               >
-                Forget
+                Update
               </button>
             </div>
 

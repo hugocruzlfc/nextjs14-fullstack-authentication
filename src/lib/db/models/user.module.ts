@@ -42,9 +42,8 @@ UserSchema.methods.confirmPassword = function (enteredPassword: string) {
   return bcrypt.compare(enteredPassword, this.password);
 };
 
-UserSchema.methods.updatePassword = async function (enteredPassword: string) {
-  this.password = await bcrypt.hash(enteredPassword, 10);
-  return true;
+UserSchema.methods.updatePassword = function (enteredPassword: string) {
+  return bcrypt.hash(enteredPassword, 10);
 };
 
 export const UserModel =

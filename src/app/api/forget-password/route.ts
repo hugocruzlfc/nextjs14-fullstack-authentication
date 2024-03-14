@@ -13,7 +13,7 @@ export const POST = async (req: NextRequest) => {
   if (!existUser) {
     return NextResponse.json(
       {
-        error: "User not exist",
+        error: "No exist user with this email",
         message: null,
       },
       {
@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
   }
 
   const token = generateForgetToken(existUser._id, email);
-  const mailResponse = await sendMail(existUser.name, token, email);
+  await sendMail(existUser.name, token, email);
 
   const response = NextResponse.json(
     {
